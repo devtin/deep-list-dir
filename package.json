@@ -16,12 +16,15 @@
     "url": "git+https://github.com/devtin/deep-list-dir.git"
   },
   "keywords": [
-    "ava",
-    "test",
-    "rollup",
-    "json",
-    "annotate",
-    "documentation"
+    "deep",
+    "deeply",
+    "recursively",
+    "list",
+    "scan",
+    "directory",
+    "folder",
+    "filter",
+    "pattern"
   ],
   "license": "MIT",
   "bugs": {
