@@ -27,14 +27,17 @@ Take the following file structure:
 And the following script:
 
 ```js
-const { deepListDir } = require('deep-list-dir')
+const { deepListDir, deepListDirSync } = require('deep-list-dir')
 deepListDir('<directory>',
   {
     pattern: ['*.md'], // minimatch or RegExp
     // minimatchOptions: { matchBase: true } // minimatch options
   }
 ).then(console.log) // => ['<directory>/dir1/README.md', '<directory>/README.md']
+
+console.log(deepListDirSync('<directory>', { pattern: '*.js'}))  // => ['<directory>/dir2/sub-dir2/index.js', '<directory>/index.js']
 ```
+
 
 * * *
 
