@@ -1,5 +1,5 @@
 /*!
- * deep-list-dir v1.0.0
+ * deep-list-dir v1.0.1
  * (c) 2020 Martin Rafael Gonzalez <tin@devtin.io>
  * MIT
  */
@@ -37,6 +37,7 @@ async function deepListDir (directory, { pattern: patterns, base, minimatchOptio
     return typeof pattern === 'string' ? new minimatch.Minimatch(pattern, minimatchOptions) : pattern
   });
   const files = (await readdirAsync(directory)).map(file => {
+    /* eslint-disable-next-line */
     return new Promise(async (resolve) => {
       const fullFile = path.join(directory, file);
 
