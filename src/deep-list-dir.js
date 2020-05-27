@@ -25,6 +25,7 @@ export async function deepListDir (directory, { pattern: patterns, base, minimat
     return typeof pattern === 'string' ? new Minimatch(pattern, minimatchOptions) : pattern
   })
   const files = (await readdirAsync(directory)).map(file => {
+    /* eslint-disable-next-line */
     return new Promise(async (resolve) => {
       const fullFile = path.join(directory, file)
 
