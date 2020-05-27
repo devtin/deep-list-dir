@@ -1,6 +1,6 @@
 {
   "name": "deep-list-dir",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Deeply lists given directory",
   "author": "Martin Rafael Gonzalez <tin@devtin.io>",
   "main": "dist/deep-list-dir.js",
