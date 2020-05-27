@@ -1,0 +1,33 @@
+name: publish
+
+on:
+  push:
+    branches: master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Authenticate github cli
+        uses: actions/checkout@v2
+      - name: Identify github user
+        run: |
+          git config --global user.email "tin@devtin.io"
+          git config --global user.name "Martin Rafael Gonzalez"
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+      - name: install dependencies
+        run: |
+          npm ci
+      - name: publish package to npm registry
+        run: |
+          npm publish --access public && git tag v$(node -p -e "require('./package.json').version")
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
