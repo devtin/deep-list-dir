@@ -28,6 +28,7 @@ And the following script:
 
 ```js
 const { deepListDir, deepListDirSync } = require('deep-list-dir')
+
 deepListDir('<directory>',
   {
     pattern: ['*.md'], // minimatch or RegExp
