@@ -1,5 +1,5 @@
 /*!
- * deep-list-dir v1.0.1
+ * deep-list-dir v1.1.0
  * (c) 2020 Martin Rafael Gonzalez <tin@devtin.io>
  * MIT
  */
@@ -21,6 +21,44 @@ const readdirAsync = util.promisify(fs.readdir);
 
 const lstat = util.promisify(fs.lstat);
 
+const MinimatchOptions = {
+  matchBase: true
+};
+
+/**
+ * Creates patterns
+ * @param {String[]|RegExp[]|RegExp|String} patterns
+ */
+function parsePatterns (patterns, minimatchOptions) {
+  return castArray(patterns).map(pattern => {
+    return typeof pattern === 'string' ? new minimatch.Minimatch(pattern, minimatchOptions) : pattern
+  })
+}
+
+function includeFile ({ patterns, base, fullFile }) {
+  let included = !patterns.length;
+  let excluded = false;
+
+  each(patterns, pattern => {
+    const relativeFile = path.relative(base, fullFile);
+    const isRegex = pattern instanceof RegExp;
+    if ((isRegex && pattern.test(relativeFile)) || pattern.match(relativeFile)) {
+      included = true;
+      return
+    }
+    if (!isRegex && pattern.negate) {
+      included = false;
+      excluded = true;
+      return false
+    }
+  });
+
+  return {
+    included,
+    excluded
+  }
+}
+
 /**
  * Deeply scans the given `directory` and returns results optionally filtering those matching given
  * <a href="https://github.com/isaacs/minimatch#readme" target="_blank">minimatch</a> `pattern` returning an array of
@@ -31,37 +69,23 @@ const lstat = util.promisify(fs.lstat);
  * @param {String[]|String|RegExp|RegExp[]} [options.pattern] - Minimatch pattern or RegExp
  * @return {Promise<String[]>} Paths found
  */
-async function deepListDir (directory, { pattern: patterns, base, minimatchOptions = { matchBase: true } } = {}) {
+async function deepListDir (directory, { pattern: patterns, base, minimatchOptions = MinimatchOptions } = {}) {
   base = base || directory;
-  patterns = castArray(patterns).map(pattern => {
-    return typeof pattern === 'string' ? new minimatch.Minimatch(pattern, minimatchOptions) : pattern
-  });
+  patterns = parsePatterns(patterns, minimatchOptions);
   const files = (await readdirAsync(directory)).map(file => {
     /* eslint-disable-next-line */
     return new Promise(async (resolve) => {
       const fullFile = path.join(directory, file);
 
-      let included = !patterns.length;
-      let excluded = false;
-
-      each(patterns, pattern => {
-        const relativeFile = path.relative(base, fullFile);
-        const isRegex = pattern instanceof RegExp;
-        if ((isRegex && pattern.test(relativeFile)) || pattern.match(relativeFile)) {
-          included = true;
-          return
-        }
-        if (!isRegex && pattern.negate) {
-          included = false;
-          excluded = true;
-          return false
-        }
+      const { excluded, included } = includeFile({
+        patterns,
+        fullFile,
+        base
       });
 
       const isDirectory = (await lstat(fullFile)).isDirectory();
 
       if (!excluded && isDirectory) {
-        // found = found.concat(await deepScanDir(file, { exclude, filter, only }))
         return resolve(deepListDir(fullFile, { pattern: patterns, base: directory }))
       }
 
@@ -75,4 +99,32 @@ async function deepListDir (directory, { pattern: patterns, base, minimatchOptio
   return flattenDeep(await Promise.all(files)).filter(Boolean)
 }
 
+function deepListDirSync (directory, { pattern: patterns, base, minimatchOptions = MinimatchOptions } = {}) {
+  base = base || directory;
+  patterns = parsePatterns(patterns, minimatchOptions);
+  const files = fs.readdirSync(directory).map(file => {
+    const fullFile = path.join(directory, file);
+
+    const { excluded, included } = includeFile({
+      patterns,
+      fullFile,
+      base
+    });
+
+    const isDirectory = fs.lstatSync(fullFile).isDirectory();
+
+    if (!excluded && isDirectory) {
+      return deepListDirSync(fullFile, { pattern: patterns, base: directory })
+    }
+
+    if (!included) {
+      return
+    }
+
+    return fullFile
+  });
+  return flattenDeep(files).filter(Boolean)
+}
+
 exports.deepListDir = deepListDir;
+exports.deepListDirSync = deepListDirSync;
