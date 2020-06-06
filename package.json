@@ -9,7 +9,7 @@
     "build:live": "nodemon -w src -w test --exec npm run build",
     "lint": "eslint --ext .js --ignore-path .gitignore src/",
     "test": "ava --serial --verbose",
-    "release": "standard-version"
+    "release": "standard-version -a"
   },
   "repository": {
     "type": "git",
