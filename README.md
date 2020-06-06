@@ -18,8 +18,8 @@ Take the following file structure:
 │   └── README.md
 ├── dir2
 │   └── sub-dir2
-│   │   └── hi.txt
-│   │   └── index.js
+│       ├── hi.txt
+│       └── index.js
 ├── index.js
 └── README.md
 ```
