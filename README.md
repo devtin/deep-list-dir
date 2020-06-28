@@ -8,6 +8,9 @@ This module deeply lists all files in given directory (including sub-folders) by
 given `pattern` which can be an array of <a href="https://www.npmjs.com/package/minimatch" target="_blank">minimatch</a>
 expressions or `RegExp`.
 
+It will return all matching results. <a href="https://www.npmjs.com/package/minimatch" target="_blank">minimatch</a>
+negative patterns are used to explicitly exclude a path from being scan / returned.
+
 ## Example
 
 Take the following file structure:

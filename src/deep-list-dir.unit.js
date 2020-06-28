@@ -1,4 +1,5 @@
 import test from 'ava'
+import path from 'path'
 import { deepListDir, deepListDirSync } from './deep-list-dir.js'
 
 const mdFile = /\.md$/
@@ -38,7 +39,7 @@ test(`Deeply lists and filters files`, async t => {
   })
 })
 
-test.only(`Deeply lists and filters files (sync)`, t => {
+test(`Deeply lists and filters files (sync)`, t => {
   const dir = fixturePath('./')
   const r1 = deepListDirSync(dir, { pattern: ['*.md'] })
   const r2 = deepListDirSync(dir, { pattern: ['*.js'] })
@@ -70,4 +71,11 @@ test.only(`Deeply lists and filters files (sync)`, t => {
   r5.forEach(file => {
     t.true(mdFile.test(file))
   })
+})
+
+test(`Negative expressions are used to explicitly exclude paths`, t => {
+  const dir = fixturePath('./')
+  const results = deepListDirSync(dir, { pattern: ['*.js', '!sub-dir2'] })
+  t.is(results.length, 1)
+  t.is(path.relative(dir, results[0]), 'index.js')
 })

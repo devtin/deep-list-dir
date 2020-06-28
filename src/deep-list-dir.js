@@ -16,6 +16,7 @@ const MinimatchOptions = {
 /**
  * Creates patterns
  * @param {String[]|RegExp[]|RegExp|String} patterns
+ * @param {Object} [minimatchOptions]
  */
 function parsePatterns (patterns, minimatchOptions) {
   return castArray(patterns).map(pattern => {
@@ -23,6 +24,14 @@ function parsePatterns (patterns, minimatchOptions) {
   })
 }
 
+/**
+ * Checks if given `fullFile` should be included according to provided `patterns`
+ *
+ * @param patterns
+ * @param base
+ * @param fullFile
+ * @return {{excluded: boolean, included: boolean}}
+ */
 function includeFile ({ patterns, base, fullFile }) {
   let included = !patterns.length
   let excluded = false
@@ -30,14 +39,24 @@ function includeFile ({ patterns, base, fullFile }) {
   each(patterns, pattern => {
     const relativeFile = path.relative(base, fullFile)
     const isRegex = pattern instanceof RegExp
-    if ((isRegex && pattern.test(relativeFile)) || pattern.match(relativeFile)) {
-      included = true
+
+    if (isRegex) {
+      if (!included) {
+        included = pattern.test(relativeFile)
+      }
       return
     }
-    if (!isRegex && pattern.negate) {
-      included = false
-      excluded = true
-      return false
+
+    if (pattern.negate) {
+      if (!excluded) {
+        excluded = !pattern.match(relativeFile)
+        return !excluded
+      }
+      return
+    }
+
+    if (!included) {
+      included = pattern.match(relativeFile)
     }
   })
 
@@ -55,6 +74,8 @@ function includeFile ({ patterns, base, fullFile }) {
  * @param {String} directory - The directory to scan
  * @param {Object} options
  * @param {String[]|String|RegExp|RegExp[]} [options.pattern] - Minimatch pattern or RegExp
+ * @param {String[]|String|RegExp|RegExp[]} [options.base] - Minimatch pattern or RegExp
+ * @param {String[]|String|RegExp|RegExp[]} [options.minimatchOptions] - Additional minimatch options
  * @return {Promise<String[]>} Paths found
  */
 export async function deepListDir (directory, { pattern: patterns, base, minimatchOptions = MinimatchOptions } = {}) {
@@ -71,10 +92,11 @@ export async function deepListDir (directory, { pattern: patterns, base, minimat
         base
       })
 
-      const isDirectory = (await lstat(fullFile)).isDirectory()
-
-      if (!excluded && isDirectory) {
-        return resolve(deepListDir(fullFile, { pattern: patterns, base: directory }))
+      if (!excluded) {
+        const isDirectory = (await lstat(fullFile)).isDirectory()
+        if (isDirectory) {
+          return resolve(deepListDir(fullFile, { pattern: patterns, base: directory }))
+        }
       }
 
       if (!included) {
