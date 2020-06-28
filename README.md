@@ -8,6 +8,9 @@ This module deeply lists all files in given directory (including sub-folders) by
 given `pattern` which can be an array of <a href="https://www.npmjs.com/package/minimatch" target="_blank">minimatch</a>
 expressions or `RegExp`.
 
+It will return all matching results. <a href="https://www.npmjs.com/package/minimatch" target="_blank">minimatch</a>
+negative patterns are used to explicitly exclude a path from being scan / returned.
+
 ## Example
 
 Take the following file structure:
@@ -24,7 +27,7 @@ Take the following file structure:
 └── README.md
 ```
 
-And the following script:
+...and the following script:
 
 ```js
 const { deepListDir, deepListDirSync } = require('deep-list-dir')
@@ -32,6 +35,7 @@ const { deepListDir, deepListDirSync } = require('deep-list-dir')
 deepListDir('<directory>',
   {
     pattern: ['*.md'], // minimatch or RegExp
+    // base: '', set parent base to something different than given directory
     // minimatchOptions: { matchBase: true } // minimatch options
   }
 ).then(console.log) // => ['<directory>/dir1/README.md', '<directory>/README.md']

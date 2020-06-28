@@ -23,9 +23,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - name: install dependencies
-        run: |
-          npm ci
       - name: publish package to npm registry
         run: |
           npm publish --access public && git tag v$(node -p -e "require('./package.json').version")
