@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/devtin/deep-list-dir/compare/v1.2.0...v1.3.0) (2020-06-28)
+
+
+### Features
+
+* negative patterns explicitly excludes paths ([a922422](https://github.com/devtin/deep-list-dir/commit/a922422e1db10dae1e541947301e3743b4c7515c))
+
 ## [1.2.0](https://github.com/devtin/deep-list-dir/compare/v1.0.0...v1.2.0) (2020-06-06)
 
 
