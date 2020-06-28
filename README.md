@@ -24,7 +24,7 @@ Take the following file structure:
 └── README.md
 ```
 
-And the following script:
+...and the following script:
 
 ```js
 const { deepListDir, deepListDirSync } = require('deep-list-dir')
@@ -32,6 +32,7 @@ const { deepListDir, deepListDirSync } = require('deep-list-dir')
 deepListDir('<directory>',
   {
     pattern: ['*.md'], // minimatch or RegExp
+    // base: '', set parent base to something different than given directory
     // minimatchOptions: { matchBase: true } // minimatch options
   }
 ).then(console.log) // => ['<directory>/dir1/README.md', '<directory>/README.md']
