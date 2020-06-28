@@ -28,6 +28,7 @@ const MinimatchOptions = {
 /**
  * Creates patterns
  * @param {String[]|RegExp[]|RegExp|String} patterns
+ * @param {Object} [minimatchOptions]
  */
 function parsePatterns (patterns, minimatchOptions) {
   return castArray(patterns).map(pattern => {
@@ -35,6 +36,14 @@ function parsePatterns (patterns, minimatchOptions) {
   })
 }
 
+/**
+ * Checks if given `fullFile` should be included according to provided `patterns`
+ *
+ * @param patterns
+ * @param base
+ * @param fullFile
+ * @return {{excluded: boolean, included: boolean}}
+ */
 function includeFile ({ patterns, base, fullFile }) {
   let included = !patterns.length;
   let excluded = false;
@@ -67,6 +76,8 @@ function includeFile ({ patterns, base, fullFile }) {
  * @param {String} directory - The directory to scan
  * @param {Object} options
  * @param {String[]|String|RegExp|RegExp[]} [options.pattern] - Minimatch pattern or RegExp
+ * @param {String[]|String|RegExp|RegExp[]} [options.base] - Minimatch pattern or RegExp
+ * @param {String[]|String|RegExp|RegExp[]} [options.minimatchOptions] - Additional minimatch options
  * @return {Promise<String[]>} Paths found
  */
 async function deepListDir (directory, { pattern: patterns, base, minimatchOptions = MinimatchOptions } = {}) {
