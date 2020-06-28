@@ -51,14 +51,24 @@ function includeFile ({ patterns, base, fullFile }) {
   each(patterns, pattern => {
     const relativeFile = path.relative(base, fullFile);
     const isRegex = pattern instanceof RegExp;
-    if ((isRegex && pattern.test(relativeFile)) || pattern.match(relativeFile)) {
-      included = true;
+
+    if (isRegex) {
+      if (!included) {
+        included = pattern.test(relativeFile);
+      }
       return
     }
-    if (!isRegex && pattern.negate) {
-      included = false;
-      excluded = true;
-      return false
+
+    if (pattern.negate) {
+      if (!excluded) {
+        excluded = !pattern.match(relativeFile);
+        return !excluded
+      }
+      return
+    }
+
+    if (!included) {
+      included = pattern.match(relativeFile);
     }
   });
 
@@ -94,10 +104,11 @@ async function deepListDir (directory, { pattern: patterns, base, minimatchOptio
         base
       });
 
-      const isDirectory = (await lstat(fullFile)).isDirectory();
-
-      if (!excluded && isDirectory) {
-        return resolve(deepListDir(fullFile, { pattern: patterns, base: directory }))
+      if (!excluded) {
+        const isDirectory = (await lstat(fullFile)).isDirectory();
+        if (isDirectory) {
+          return resolve(deepListDir(fullFile, { pattern: patterns, base: directory }))
+        }
       }
 
       if (!included) {
