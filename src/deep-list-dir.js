@@ -19,7 +19,7 @@ const MinimatchOptions = {
  * @param {Object} [minimatchOptions]
  */
 function parsePatterns (patterns, minimatchOptions) {
-  return castArray(patterns).map(pattern => {
+  return castArray(patterns).filter(Boolean).map(pattern => {
     return typeof pattern === 'string' ? new Minimatch(pattern, minimatchOptions) : pattern
   })
 }
