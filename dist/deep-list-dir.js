@@ -1,5 +1,5 @@
 /*!
- * deep-list-dir v1.3.0
+ * deep-list-dir v1.4.0
  * (c) 2020 Martin Rafael Gonzalez <tin@devtin.io>
  * MIT
  */
@@ -31,7 +31,7 @@ const MinimatchOptions = {
  * @param {Object} [minimatchOptions]
  */
 function parsePatterns (patterns, minimatchOptions) {
-  return castArray(patterns).map(pattern => {
+  return castArray(patterns).filter(Boolean).map(pattern => {
     return typeof pattern === 'string' ? new minimatch.Minimatch(pattern, minimatchOptions) : pattern
   })
 }
