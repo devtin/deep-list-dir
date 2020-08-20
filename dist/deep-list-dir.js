@@ -1,5 +1,5 @@
 /*!
- * deep-list-dir v1.4.0
+ * deep-list-dir v1.4.1
  * (c) 2020 Martin Rafael Gonzalez <tin@devtin.io>
  * MIT
  */
@@ -7,19 +7,26 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var fs = _interopDefault(require('fs'));
-var path = _interopDefault(require('path'));
-var util = _interopDefault(require('util'));
-var castArray = _interopDefault(require('lodash/castArray'));
-var each = _interopDefault(require('lodash/each'));
-var flattenDeep = _interopDefault(require('lodash/flattenDeep'));
+var fs = require('fs');
+var path = require('path');
+var util = require('util');
+var castArray = require('lodash/castArray');
+var each = require('lodash/each');
+var flattenDeep = require('lodash/flattenDeep');
 var minimatch = require('minimatch');
 
-const readdirAsync = util.promisify(fs.readdir);
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-const lstat = util.promisify(fs.lstat);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
+var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
+var util__default = /*#__PURE__*/_interopDefaultLegacy(util);
+var castArray__default = /*#__PURE__*/_interopDefaultLegacy(castArray);
+var each__default = /*#__PURE__*/_interopDefaultLegacy(each);
+var flattenDeep__default = /*#__PURE__*/_interopDefaultLegacy(flattenDeep);
+
+const readdirAsync = util__default['default'].promisify(fs__default['default'].readdir);
+
+const lstat = util__default['default'].promisify(fs__default['default'].lstat);
 
 const MinimatchOptions = {
   matchBase: true
@@ -31,7 +38,7 @@ const MinimatchOptions = {
  * @param {Object} [minimatchOptions]
  */
 function parsePatterns (patterns, minimatchOptions) {
-  return castArray(patterns).filter(Boolean).map(pattern => {
+  return castArray__default['default'](patterns).filter(Boolean).map(pattern => {
     return typeof pattern === 'string' ? new minimatch.Minimatch(pattern, minimatchOptions) : pattern
   })
 }
@@ -48,8 +55,8 @@ function includeFile ({ patterns, base, fullFile }) {
   let included = !patterns.length;
   let excluded = false;
 
-  each(patterns, pattern => {
-    const relativeFile = path.relative(base, fullFile);
+  each__default['default'](patterns, pattern => {
+    const relativeFile = path__default['default'].relative(base, fullFile);
     const isRegex = pattern instanceof RegExp;
 
     if (isRegex) {
@@ -96,7 +103,7 @@ async function deepListDir (directory, { pattern: patterns, base, minimatchOptio
   const files = (await readdirAsync(directory)).map(file => {
     /* eslint-disable-next-line */
     return new Promise(async (resolve) => {
-      const fullFile = path.join(directory, file);
+      const fullFile = path__default['default'].join(directory, file);
 
       const { excluded, included } = includeFile({
         patterns,
@@ -118,14 +125,14 @@ async function deepListDir (directory, { pattern: patterns, base, minimatchOptio
       return resolve(fullFile)
     })
   });
-  return flattenDeep(await Promise.all(files)).filter(Boolean)
+  return flattenDeep__default['default'](await Promise.all(files)).filter(Boolean)
 }
 
 function deepListDirSync (directory, { pattern: patterns, base, minimatchOptions = MinimatchOptions } = {}) {
   base = base || directory;
   patterns = parsePatterns(patterns, minimatchOptions);
-  const files = fs.readdirSync(directory).map(file => {
-    const fullFile = path.join(directory, file);
+  const files = fs__default['default'].readdirSync(directory).map(file => {
+    const fullFile = path__default['default'].join(directory, file);
 
     const { excluded, included } = includeFile({
       patterns,
@@ -133,7 +140,7 @@ function deepListDirSync (directory, { pattern: patterns, base, minimatchOptions
       base
     });
 
-    const isDirectory = fs.lstatSync(fullFile).isDirectory();
+    const isDirectory = fs__default['default'].lstatSync(fullFile).isDirectory();
 
     if (!excluded && isDirectory) {
       return deepListDirSync(fullFile, { pattern: patterns, base: directory })
@@ -145,7 +152,7 @@ function deepListDirSync (directory, { pattern: patterns, base, minimatchOptions
 
     return fullFile
   });
-  return flattenDeep(files).filter(Boolean)
+  return flattenDeep__default['default'](files).filter(Boolean)
 }
 
 exports.deepListDir = deepListDir;
