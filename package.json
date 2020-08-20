@@ -4,6 +4,7 @@
   "description": "Deeply lists given directory",
   "author": "Martin Rafael Gonzalez <tin@devtin.io>",
   "main": "dist/deep-list-dir.js",
+  "module": "dist/deep-list-dir.mjs",
   "scripts": {
     "build": "rollup -c",
     "build:live": "nodemon -w src -w test --exec npm run build",

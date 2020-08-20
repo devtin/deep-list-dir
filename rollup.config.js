@@ -19,6 +19,11 @@ export default [
         format: 'cjs',
         banner
       },
+      {
+        file: `dist/deep-list-dir.mjs`,
+        format: 'ems',
+        banner
+      },
     ],
     plugins: [commonjs()]
   }
