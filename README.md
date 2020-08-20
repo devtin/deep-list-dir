@@ -38,11 +38,32 @@ deepListDir('<directory>',
     // base: '', set parent base to something different than given directory
     // minimatchOptions: { matchBase: true } // minimatch options
   }
-).then(console.log) // => ['<directory>/dir1/README.md', '<directory>/README.md']
-
-console.log(deepListDirSync('<directory>', { pattern: '*.js'}))  // => ['<directory>/dir2/sub-dir2/index.js', '<directory>/index.js']
+).then(console.log)
 ```
 
+Will output
+
+```json
+[
+  "<directory>/dir1/README.md",
+  "<directory>/README.md"
+]
+```
+
+A sync version is also provided:
+
+```js
+console.log(deepListDirSync('<directory>', { pattern: '*.js'})) 
+```
+
+Output:
+
+```json
+[
+  "<directory>/dir2/sub-dir2/index.js",
+  "<directory>/index.js"
+]
+```
 
 * * *
 
