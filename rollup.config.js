@@ -21,7 +21,7 @@ export default [
       },
       {
         file: `dist/deep-list-dir.mjs`,
-        format: 'ems',
+        format: 'esm',
         banner
       },
     ],
