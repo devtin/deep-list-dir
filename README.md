@@ -45,8 +45,8 @@ Will output
 
 ```json
 [
-  "<directory>/dir1/README.md",
-  "<directory>/README.md"
+  "dir1/README.md",
+  "README.md"
 ]
 ```
 
@@ -60,8 +60,8 @@ Output:
 
 ```json
 [
-  "<directory>/dir2/sub-dir2/index.js",
-  "<directory>/index.js"
+  "dir2/sub-dir2/index.js",
+  "index.js"
 ]
 ```
 
