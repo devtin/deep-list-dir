@@ -4,7 +4,7 @@
 <a href="https://www.npmjs.com/package/deep-list-dir" target="_blank"><img src="https://img.shields.io/npm/v/deep-list-dir.svg" alt="Version"></a>
 [![tests](https://github.com/devtin/deep-list-dir/workflows/test/badge.svg)](https://github.com/devtin/deep-list-dir/actions)
 
-This module deeply lists all files in given directory (including sub-folders) by early filtering the results using the
+This module recursively lists all files in given directory (including sub-folders) by early filtering the results using the
 given `pattern` which can be an array of <a href="https://www.npmjs.com/package/minimatch" target="_blank">minimatch</a>
 expressions or `RegExp`.
 
