@@ -37,14 +37,14 @@
   "homepage": "https://github.com/devtin/deep-list-dir#readme",
   "devDependencies": {
     "@ava/babel": "^1.0.1",
-    "@rollup/plugin-commonjs": "^16.0.0",
-    "ava": "^3.13.0",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "ava": "^3.15.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.14.0",
+    "eslint": "^7.18.0",
     "esm": "^3.2.25",
-    "nodemon": "^2.0.6",
-    "rollup": "^2.33.3",
-    "standard-version": "^9.0.0"
+    "nodemon": "^2.0.7",
+    "rollup": "^2.38.0",
+    "standard-version": "^9.1.0"
   },
   "ava": {
     "files": [
@@ -85,7 +85,7 @@
     }
   },
   "dependencies": {
-    "fs-extra": "^9.0.1",
+    "fs-extra": "^9.1.0",
     "lodash": "^4.17.20",
     "minimatch": "^3.0.4"
   }
