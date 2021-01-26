@@ -1,7 +1,22 @@
 {
   "name": "deep-list-dir",
+  "private": false,
   "version": "1.4.2",
-  "description": "Deeply lists given directory",
+  "license": "MIT",
+  "keywords": [
+    "deep",
+    "deeply",
+    "recursive",
+    "list",
+    "scan",
+    "directory",
+    "folder",
+    "file",
+    "filter",
+    "glob",
+    "pattern"
+  ],
+  "description": "Recursively lists given directory, alternatively filtering results with given options",
   "author": "Martin Rafael Gonzalez <tin@devtin.io>",
   "main": "dist/deep-list-dir.js",
   "module": "dist/deep-list-dir.mjs",
@@ -16,18 +31,6 @@
     "type": "git",
     "url": "git+https://github.com/devtin/deep-list-dir.git"
   },
-  "keywords": [
-    "deep",
-    "deeply",
-    "recursively",
-    "list",
-    "scan",
-    "directory",
-    "folder",
-    "filter",
-    "pattern"
-  ],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/devtin/deep-list-dir/issues"
   },
