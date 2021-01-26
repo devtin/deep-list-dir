@@ -1,6 +1,6 @@
 /*!
- * deep-list-dir v1.4.2
- * (c) 2020 Martin Rafael Gonzalez <tin@devtin.io>
+ * deep-list-dir v1.4.3
+ * (c) 2020-2021 Martin Rafael Gonzalez <tin@devtin.io>
  * MIT
  */
 'use strict';
