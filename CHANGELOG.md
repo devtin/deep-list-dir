@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.4](https://github.com/devtin/deep-list-dir/compare/v1.4.3...v1.4.4) (2021-02-06)
+
+
+### Bug Fixes
+
+* preserves mainBase path ([ddb25d2](https://github.com/devtin/deep-list-dir/commit/ddb25d27872d6fa4da46188c114065a5f41d9723))
+
 ### [1.4.3](https://github.com/devtin/deep-list-dir/compare/v1.4.2...v1.4.3) (2021-01-26)
 
 ### [1.4.2](https://github.com/devtin/deep-list-dir/compare/v1.4.1...v1.4.2) (2020-11-27)

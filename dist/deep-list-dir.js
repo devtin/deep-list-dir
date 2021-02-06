@@ -1,5 +1,5 @@
 /*!
- * deep-list-dir v1.4.3
+ * deep-list-dir v1.4.4
  * (c) 2020-2021 Martin Rafael Gonzalez <tin@devtin.io>
  * MIT
  */
@@ -97,9 +97,11 @@ function includeFile ({ patterns, base, fullFile }) {
  * @param {String[]|String|RegExp|RegExp[]} [options.minimatchOptions] - Additional minimatch options
  * @return {Promise<String[]>} Paths found
  */
-async function deepListDir (directory, { pattern: patterns, base, minimatchOptions = MinimatchOptions } = {}) {
+async function deepListDir (directory, { pattern: patterns, base, mainBase, minimatchOptions = MinimatchOptions } = {}) {
   base = base || directory;
+  mainBase = mainBase || base;
   patterns = parsePatterns(patterns, minimatchOptions);
+
   const files = (await readdirAsync(directory)).map(file => {
     /* eslint-disable-next-line */
     return new Promise(async (resolve) => {
@@ -108,13 +110,13 @@ async function deepListDir (directory, { pattern: patterns, base, minimatchOptio
       const { excluded, included } = includeFile({
         patterns,
         fullFile,
-        base
+        base: mainBase
       });
 
       if (!excluded) {
         const isDirectory = (await lstat(fullFile)).isDirectory();
         if (isDirectory) {
-          return resolve(deepListDir(fullFile, { pattern: patterns, base: directory }))
+          return resolve(deepListDir(fullFile, { pattern: patterns, base: directory, mainBase }))
         }
       }
 
@@ -128,8 +130,10 @@ async function deepListDir (directory, { pattern: patterns, base, minimatchOptio
   return flattenDeep__default['default'](await Promise.all(files)).filter(Boolean)
 }
 
-function deepListDirSync (directory, { pattern: patterns, base, minimatchOptions = MinimatchOptions } = {}) {
+function deepListDirSync (directory, { pattern: patterns, base, mainBase, minimatchOptions = MinimatchOptions } = {}) {
   base = base || directory;
+  mainBase = mainBase || base;
+
   patterns = parsePatterns(patterns, minimatchOptions);
   const files = fs__default['default'].readdirSync(directory).map(file => {
     const fullFile = path__default['default'].join(directory, file);
@@ -137,13 +141,13 @@ function deepListDirSync (directory, { pattern: patterns, base, minimatchOptions
     const { excluded, included } = includeFile({
       patterns,
       fullFile,
-      base
+      base: mainBase
     });
 
     const isDirectory = fs__default['default'].lstatSync(fullFile).isDirectory();
 
     if (!excluded && isDirectory) {
-      return deepListDirSync(fullFile, { pattern: patterns, base: directory })
+      return deepListDirSync(fullFile, { pattern: patterns, base: directory, mainBase })
     }
 
     if (!included) {
